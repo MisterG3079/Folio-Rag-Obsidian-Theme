@@ -1,8 +1,8 @@
-#Folio and Rag
+# Folio and Rag
 
 A warm, tactile, paper-inspired theme for [Obsidian](https://obsidian.md), designed for long-form writing, literary note-taking, and calm reading sessions.
 
-![Folio & Rag Preview](screenshot.png)
+![Folio and Rag Preview](screenshot.png)
 
 ## Features
 
@@ -24,7 +24,7 @@ If none of these are installed, the theme falls back gracefully to native system
 ## Installation
 
 1. Open **Settings → Appearance → Themes** in Obsidian.
-2. Click **Manage**, search for **Folio & Rag**, and click **Install and use**.
+2. Click **Manage**, search for **Folio and Rag**, and click **Install and use**.
 3. _(Optional)_ Install the **Style Settings** community plugin to switch paper stocks, ink accents, and font pairings.
 
 ## License
