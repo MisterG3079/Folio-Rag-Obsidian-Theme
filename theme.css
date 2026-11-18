@@ -1,0 +1,489 @@
+/* ==========================================================================
+   Folio & Rag — A Warm, Editorial Paper Theme for Obsidian
+   Author: Grant Floyd
+   ========================================================================== */
+
+/* @settings
+
+name: Folio & Rag
+id: folio-and-rag
+settings:
+  - id: folio-appearance-heading
+    title: Paper & Ink Palette
+    type: heading
+    level: 2
+    collapsed: false
+  - id: folio-paper-stock
+    title: Light Mode Paper Stock
+    description: Switch between Warm Cotton and Sunlit Vellum in Light Mode.
+    type: class-select
+    allowEmpty: false
+    default: folio-stock-cotton
+    options:
+      - label: Warm Cotton (#FAF6EE)
+        value: folio-stock-cotton
+      - label: Sunlit Vellum (#F5EDE0)
+        value: folio-stock-vellum
+  - id: folio-accent-preset
+    title: Ink Accent Swatch
+    description: Choose a literary ink accent for links, headings, and active controls.
+    type: class-select
+    allowEmpty: false
+    default: folio-accent-terracotta
+    options:
+      - label: Terracotta
+        value: folio-accent-terracotta
+      - label: Sage Olive
+        value: folio-accent-sage
+      - label: Warm Ochre
+        value: folio-accent-ochre
+      - label: Slate Ink
+        value: folio-accent-slate
+  - id: folio-custom-accent
+    title: Custom Accent Override
+    description: Optional custom accent color override (leave at default to use the swatch above).
+    type: variable-themed-color
+    format: hex
+    default-light: '#B85A3A'
+    default-dark: '#D97B59'
+  - id: folio-paper-grain
+    title: Subtle Paper Grain Texture
+    description: Adds an ultra-fine tactile paper fiber overlay across the workspace.
+    type: class-toggle
+    default: true
+  - id: folio-typography-heading
+    title: Editorial Typography
+    type: heading
+    level: 2
+    collapsed: false
+  - id: folio-font-pairing
+    title: Font Pairing
+    description: Requires the chosen fonts to be installed locally on your system.
+    type: class-select
+    allowEmpty: false
+    default: folio-font-newsreader
+    options:
+      - label: Newsreader + Plus Jakarta Sans
+        value: folio-font-newsreader
+      - label: Literata + Inter
+        value: folio-font-literata
+      - label: Lora + Plus Jakarta Sans
+        value: folio-font-lora
+      - label: Native System Serif + Sans
+        value: folio-font-system
+  - id: folio-font-size
+    title: Reading Font Size
+    type: variable-number-slider
+    default: 17
+    min: 15
+    max: 22
+    step: 0.5
+    format: px
+  - id: folio-line-height
+    title: Reading Line Height
+    type: variable-number-slider
+    default: 1.68
+    min: 1.45
+    max: 1.95
+    step: 0.02
+  - id: folio-line-width
+    title: Readable Column Width
+    type: variable-number-slider
+    default: 700
+    min: 560
+    max: 920
+    step: 20
+    format: px
+
+*/
+
+/* --------------------------------------------------------------------------
+   Base Typography & Layout Tokens
+   -------------------------------------------------------------------------- */
+body {
+  --font-text-theme: 'Newsreader', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --font-interface-theme: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-monospace-theme: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+
+  --font-text-size: 17px;
+  --line-height-normal: 1.68;
+  --file-line-width: 700px;
+
+  --h1-font: var(--font-text-theme);
+  --h2-font: var(--font-text-theme);
+  --h3-font: var(--font-text-theme);
+  --h4-font: var(--font-interface-theme);
+  --h5-font: var(--font-interface-theme);
+  --h6-font: var(--font-interface-theme);
+
+  --h1-size: 2.05em;
+  --h2-size: 1.58em;
+  --h3-size: 1.28em;
+  --h4-size: 1.08em;
+  --h5-size: 0.96em;
+  --h6-size: 0.88em;
+
+  --h1-weight: 600;
+  --h2-weight: 600;
+  --h3-weight: 600;
+  --h4-weight: 600;
+
+  --radius-s: 5px;
+  --radius-m: 8px;
+  --radius-l: 12px;
+  --checkbox-radius: 4px;
+  --blockquote-border-thickness: 3px;
+}
+
+/* Font Pairing Overrides (Style Settings) */
+body.folio-font-newsreader {
+  --font-text-theme: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+  --font-interface-theme: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body.folio-font-literata {
+  --font-text-theme: 'Literata', 'Iowan Old Style', Georgia, serif;
+  --font-interface-theme: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body.folio-font-lora {
+  --font-text-theme: 'Lora', 'Palatino Linotype', Georgia, serif;
+  --font-interface-theme: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body.folio-font-system {
+  --font-text-theme: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+  --font-interface-theme: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* --------------------------------------------------------------------------
+   Light Mode — Warm Cotton (Default) & Sunlit Vellum
+   -------------------------------------------------------------------------- */
+.theme-light {
+  --background-primary: #FAF6EE;
+  --background-primary-alt: #F3EDE1;
+  --background-secondary: #F3EDE1;
+  --background-secondary-alt: #EAE2D3;
+
+  --background-modifier-hover: rgba(44, 37, 29, 0.055);
+  --background-modifier-active-hover: rgba(44, 37, 29, 0.09);
+  --background-modifier-border: #E2D9C8;
+  --background-modifier-border-hover: #CFC3AE;
+  --background-modifier-border-focus: #B85A3A;
+  --background-modifier-form-field: #FDFBF7;
+  --background-modifier-box-shadow: rgba(44, 37, 29, 0.08);
+
+  --text-normal: #2C251D;
+  --text-muted: #665B4E;
+  --text-faint: #968979;
+  --text-on-accent: #FAF6EE;
+  --text-error: #B33A3A;
+  --text-success: #3E6B48;
+  --text-warning: #A66E1E;
+
+  --interactive-normal: #EFE8DA;
+  --interactive-hover: #E5DCCB;
+  --interactive-accent: #B85A3A;
+  --interactive-accent-hover: #9E492C;
+
+  --text-accent: #B85A3A;
+  --text-accent-hover: #9E492C;
+  --text-selection: rgba(184, 90, 58, 0.18);
+  --text-highlight-bg: rgba(212, 161, 74, 0.28);
+
+  --code-background: #F1E9DA;
+  --code-normal: #3B3228;
+  --blockquote-background-color: rgba(234, 226, 211, 0.45);
+  --table-header-background: #EFE7D8;
+  --table-row-alt-background: rgba(243, 237, 225, 0.55);
+  --tag-background: rgba(184, 90, 58, 0.11);
+  --tag-color: #9E492C;
+}
+
+.theme-light.folio-stock-vellum {
+  --background-primary: #F5EDE0;
+  --background-primary-alt: #ECE1D0;
+  --background-secondary: #ECE1D0;
+  --background-secondary-alt: #E1D4BF;
+  --background-modifier-border: #D9CBB5;
+  --background-modifier-border-hover: #C4B399;
+  --code-background: #E8DEC9;
+  --table-header-background: #E6DAC5;
+}
+
+/* Light Mode Ink Accent Swatches */
+.theme-light.folio-accent-terracotta {
+  --interactive-accent: #B85A3A;
+  --interactive-accent-hover: #9E492C;
+  --text-accent: #B85A3A;
+  --text-accent-hover: #9E492C;
+  --text-selection: rgba(184, 90, 58, 0.18);
+  --tag-background: rgba(184, 90, 58, 0.11);
+  --tag-color: #9E492C;
+}
+
+.theme-light.folio-accent-sage {
+  --interactive-accent: #4F6D58;
+  --interactive-accent-hover: #3E5746;
+  --text-accent: #4F6D58;
+  --text-accent-hover: #3E5746;
+  --text-selection: rgba(79, 109, 88, 0.18);
+  --tag-background: rgba(79, 109, 88, 0.12);
+  --tag-color: #3E5746;
+}
+
+.theme-light.folio-accent-ochre {
+  --interactive-accent: #A67526;
+  --interactive-accent-hover: #8A5F1B;
+  --text-accent: #A67526;
+  --text-accent-hover: #8A5F1B;
+  --text-selection: rgba(166, 117, 38, 0.2);
+  --tag-background: rgba(166, 117, 38, 0.13);
+  --tag-color: #8A5F1B;
+}
+
+.theme-light.folio-accent-slate {
+  --interactive-accent: #3D5A73;
+  --interactive-accent-hover: #2E465B;
+  --text-accent: #3D5A73;
+  --text-accent-hover: #2E465B;
+  --text-selection: rgba(61, 90, 115, 0.18);
+  --tag-background: rgba(61, 90, 115, 0.11);
+  --tag-color: #2E465B;
+}
+
+/* --------------------------------------------------------------------------
+   Dark Mode — Warm Espresso Study
+   -------------------------------------------------------------------------- */
+.theme-dark {
+  --background-primary: #1E1B17;
+  --background-primary-alt: #171411;
+  --background-secondary: #171411;
+  --background-secondary-alt: #25211C;
+
+  --background-modifier-hover: rgba(235, 226, 211, 0.06);
+  --background-modifier-active-hover: rgba(235, 226, 211, 0.1);
+  --background-modifier-border: #302A23;
+  --background-modifier-border-hover: #453D33;
+  --background-modifier-border-focus: #D97B59;
+  --background-modifier-form-field: #24201B;
+  --background-modifier-box-shadow: rgba(0, 0, 0, 0.35);
+
+  --text-normal: #EBE2D3;
+  --text-muted: #A89D8E;
+  --text-faint: #756B5E;
+  --text-on-accent: #1E1B17;
+  --text-error: #E06C6C;
+  --text-success: #7CA387;
+  --text-warning: #D4A14A;
+
+  --interactive-normal: #29241E;
+  --interactive-hover: #342E26;
+  --interactive-accent: #D97B59;
+  --interactive-accent-hover: #E68F6F;
+
+  --text-accent: #D97B59;
+  --text-accent-hover: #E68F6F;
+  --text-selection: rgba(217, 123, 89, 0.24);
+  --text-highlight-bg: rgba(212, 161, 74, 0.24);
+
+  --code-background: #26221D;
+  --code-normal: #DFD5C5;
+  --blockquote-background-color: rgba(37, 33, 28, 0.65);
+  --table-header-background: #26211B;
+  --table-row-alt-background: rgba(37, 33, 28, 0.45);
+  --tag-background: rgba(217, 123, 89, 0.16);
+  --tag-color: #E68F6F;
+}
+
+/* Dark Mode Ink Accent Swatches */
+.theme-dark.folio-accent-terracotta {
+  --interactive-accent: #D97B59;
+  --interactive-accent-hover: #E68F6F;
+  --text-accent: #D97B59;
+  --text-accent-hover: #E68F6F;
+  --text-selection: rgba(217, 123, 89, 0.24);
+  --tag-background: rgba(217, 123, 89, 0.16);
+  --tag-color: #E68F6F;
+}
+
+.theme-dark.folio-accent-sage {
+  --interactive-accent: #7CA387;
+  --interactive-accent-hover: #92B89D;
+  --text-accent: #7CA387;
+  --text-accent-hover: #92B89D;
+  --text-selection: rgba(124, 163, 135, 0.24);
+  --tag-background: rgba(124, 163, 135, 0.16);
+  --tag-color: #92B89D;
+}
+
+.theme-dark.folio-accent-ochre {
+  --interactive-accent: #D4A14A;
+  --interactive-accent-hover: #E3B462;
+  --text-accent: #D4A14A;
+  --text-accent-hover: #E3B462;
+  --text-selection: rgba(212, 161, 74, 0.24);
+  --tag-background: rgba(212, 161, 74, 0.16);
+  --tag-color: #E3B462;
+}
+
+.theme-dark.folio-accent-slate {
+  --interactive-accent: #7399BA;
+  --interactive-accent-hover: #8BB0CF;
+  --text-accent: #7399BA;
+  --text-accent-hover: #8BB0CF;
+  --text-selection: rgba(115, 153, 186, 0.24);
+  --tag-background: rgba(115, 153, 186, 0.16);
+  --tag-color: #8BB0CF;
+}
+
+/* --------------------------------------------------------------------------
+   Editorial Prose, Headings, Quotes & Tables
+   -------------------------------------------------------------------------- */
+.markdown-preview-view,
+.markdown-source-view.mod-cm6 .cm-scroller {
+  font-family: var(--font-text-theme);
+  font-optical-sizing: auto;
+  letter-spacing: -0.004em;
+}
+
+.inline-title,
+.markdown-preview-view h1,
+.HyperMD-header-1 {
+  font-family: var(--font-text-theme);
+  letter-spacing: -0.02em;
+  line-height: 1.24;
+  color: var(--text-normal);
+}
+
+.markdown-preview-view h2,
+.HyperMD-header-2 {
+  font-family: var(--font-text-theme);
+  letter-spacing: -0.015em;
+  padding-bottom: 0.28em;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.markdown-preview-view h3,
+.HyperMD-header-3 {
+  font-family: var(--font-text-theme);
+  letter-spacing: -0.01em;
+}
+
+.markdown-preview-view h6,
+.HyperMD-header-6 {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+/* Literary Blockquotes */
+.markdown-preview-view blockquote,
+.markdown-source-view.mod-cm6 .HyperMD-quote {
+  font-style: italic;
+  border-left: var(--blockquote-border-thickness) solid var(--interactive-accent);
+  background-color: var(--blockquote-background-color);
+  padding: 0.75em 1.15em;
+  border-radius: 0 var(--radius-m) var(--radius-m) 0;
+  color: var(--text-normal);
+}
+
+/* Links & Wikilinks */
+.markdown-preview-view a,
+.cm-s-obsidian span.cm-hmd-internal-link,
+.cm-s-obsidian span.cm-link {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+/* Inline Code & Fenced Code Blocks */
+.markdown-preview-view code,
+.cm-s-obsidian span.cm-inline-code {
+  font-family: var(--font-monospace-theme);
+  font-size: 0.86em;
+  padding: 0.16em 0.42em;
+  border-radius: var(--radius-s);
+  border: 1px solid var(--background-modifier-border);
+}
+
+.markdown-preview-view pre {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  padding: 1em 1.2em;
+}
+
+.markdown-preview-view pre code {
+  border: none;
+  padding: 0;
+}
+
+/* Callouts */
+.callout {
+  border-radius: var(--radius-m);
+  border: 1px solid var(--background-modifier-border);
+  border-left-width: 4px;
+  background-color: var(--background-secondary);
+  box-shadow: 0 1px 3px var(--background-modifier-box-shadow);
+}
+
+.callout-title {
+  font-family: var(--font-interface-theme);
+  font-weight: 600;
+}
+
+/* Editorial Tables */
+.markdown-preview-view table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.25em 0;
+  font-family: var(--font-interface-theme);
+  font-size: 0.92em;
+}
+
+.markdown-preview-view th {
+  background-color: var(--table-header-background);
+  font-weight: 600;
+  text-align: left;
+  border-bottom: 2px solid var(--background-modifier-border-hover);
+}
+
+.markdown-preview-view td,
+.markdown-preview-view th {
+  padding: 0.65em 0.9em;
+  border: 1px solid var(--background-modifier-border);
+}
+
+.markdown-preview-view tr:nth-child(even) td {
+  background-color: var(--table-row-alt-background);
+}
+
+/* Frontmatter Properties */
+.metadata-container {
+  font-family: var(--font-interface-theme);
+  background-color: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  padding: 0.75em 1em;
+}
+
+/* Active Navigation Item */
+.nav-file-title.is-active {
+  background-color: var(--background-modifier-active-hover);
+  color: var(--text-accent);
+  font-weight: 600;
+}
+
+/* Subtle Tactile Paper Grain Overlay (Offline Inline Data URI) */
+body.folio-grain-enabled::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+
+.theme-dark.folio-grain-enabled::after {
+  opacity: 0.022;
+}
