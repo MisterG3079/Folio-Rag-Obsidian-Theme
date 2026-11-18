@@ -1,4 +1,4 @@
-# Folio and Rag
+#Folio and Rag
 
 A warm, tactile, paper-inspired theme for [Obsidian](https://obsidian.md), designed for long-form writing, literary note-taking, and calm reading sessions.
 
